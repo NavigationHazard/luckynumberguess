@@ -11,45 +11,55 @@ public class Main {
 }
 
 class LuckyNumber {
+    // Define Fields
+    private String secret = "4359";
+    private int bulls;
+    private int cows;
+    private String input;
 
-    private int in1;
-    private int in2;
-    private int in3;
-    private int in4;
-    private int in5;
-    private int in6;
-    private int sumFirstThree;
-    private int sumLastThree;
-
-    private void inputScan() {
+    // scan for guess by user input
+    public void inputScan() {
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.next();
-        in1 = input.charAt(Integer.parseInt(String.valueOf(0)));
-        in2 = input.charAt(Integer.parseInt(String.valueOf(1)));
-        in3 = input.charAt(Integer.parseInt(String.valueOf(2)));
-        in4 = input.charAt(Integer.parseInt(String.valueOf(3)));
-        in5 = input.charAt(Integer.parseInt(String.valueOf(4)));
-        in6 = input.charAt(Integer.parseInt(String.valueOf(5)));
-
+        this.input = scanner.next();
     }
 
-    private void sumInputs() {
-        sumFirstThree = in1 + in2 + in3;
-        sumLastThree = in4 + in5 + in6;
-    }
-
-    private void outPut() {
-        if (sumLastThree == sumFirstThree) {
-            System.out.println("Lucky");
-        } else {
-            System.out.println("Regular");
+    // iterate through input characters and check if
+    // any char from the secret code matches it
+    // if it matches then cows increase
+    // if the position of the char is the same then bulls increase
+    // ! and the cows decrease because the position overrides the the correctness
+    private void bullsCows() {
+        for (int i = 0; i < input.length(); i++) {
+            char cache = input.charAt(i);
+            for (int y = 0; y < secret.length(); y++) {
+                if (secret.charAt(y) == cache) {
+                    cows++;
+                }
+            }
+            if (input.charAt(i) == secret.charAt(i)) {
+                bulls++;
+                cows--;
+            }
         }
-
     }
 
+    // output method
+    private void outPut() {
+        if (bulls != 0 && cows == 0) {
+            System.out.println("Grade: " + bulls + " bull(s). The secret code is " + secret + ".");
+        } else if (cows != 0 && bulls == 0) {
+            System.out.println("Grade: " + cows + " cow(s). The secret code is " + secret + ".");
+        } else if (cows != 0 && bulls != 0) {
+            System.out.println("Grade: " + bulls + " bull(s) and " + cows + " cow(s). The secret code is " + secret + ".");
+        } else {
+            System.out.println("Grade: None. The secret code is " + secret + ".");
+        }
+    }
+
+    // launcher
     public void runLuckyNumber() {
         inputScan();
-        sumInputs();
+        bullsCows();
         outPut();
     }
 }
